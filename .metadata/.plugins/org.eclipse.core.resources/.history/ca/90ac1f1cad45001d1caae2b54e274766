@@ -1,0 +1,11 @@
+package com.example.avalicao04.util;
+
+import com.example.avalicao04.dto.PaymentDto;
+import com.example.avalicao04.entity.PaymentEntity;
+
+public class MappersUtil {
+	
+	public PaymentDto convertPaymentEntityToDto(PaymentEntity) {
+		
+	}
+}

@@ -1,0 +1,18 @@
+package com.example.avalicao04.model;
+
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+
+public class Pagamento {
+	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
+	
+	private Long cardNumber;
+	
+	private String cardholderName;
+	
+	private int securityCode;
+	
+	private int 
+}

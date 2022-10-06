@@ -1,0 +1,34 @@
+package com.example.avalicao04.model;
+
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.OneToOne;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+
+import com.example.avalicao04.constant.Brand;
+
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+@Getter @Setter
+@AllArgsConstructor @NoArgsConstructor
+public class Card {
+	@NotBlank
+	private String numberToken;
+	@NotBlank
+	private String cardholderName;
+	@NotBlank
+	private Long securityCode;
+	@NotBlank @Enumerated(EnumType.STRING)
+	private Brand brand;
+	@NotBlank
+	private int expirationMonth;
+	@NotBlank
+	private int expirationYear;
+	@NotNull
+	@OneToOne
+	private Pedido pedido;
+}

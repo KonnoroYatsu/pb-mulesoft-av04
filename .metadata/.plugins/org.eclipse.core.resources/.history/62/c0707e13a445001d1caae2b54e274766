@@ -1,0 +1,20 @@
+package com.example.avalicao04.dto;
+
+import com.example.avalicao04.entity.Order;
+
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+@Getter @Setter
+@AllArgsConstructor @NoArgsConstructor
+public class PaymentDto {
+	private Long cardNumber;
+	private String cardholderName;
+	private int securityCode;
+	private int expirationMonth;
+	private int expirationYear;
+	private String brand;
+	private Order Order;
+}

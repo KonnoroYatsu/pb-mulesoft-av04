@@ -1,0 +1,48 @@
+package com.example.avalicao04.dto;
+
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+
+import com.example.avalicao04.constant.Brand;
+import com.example.avalicao04.entity.Order;
+
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+@Entity @Table(name = "paymentsTest")
+@Getter @Setter
+@AllArgsConstructor @NoArgsConstructor
+public class PaymentDto {
+	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
+	
+	@NotNull
+	private Long cardNumber;
+	
+	@NotNull
+	private String cardholderName;
+	
+	@NotNull
+	private int securityCode;
+	
+	@NotNull
+	private int expirationMonth;
+	
+	@NotNull
+	private int expirationYear;
+	
+	@NotNull @Enumerated(EnumType.STRING)
+	private Brand brand;
+	
+	@NotNull @OneToOne
+	private Order Order;
+}

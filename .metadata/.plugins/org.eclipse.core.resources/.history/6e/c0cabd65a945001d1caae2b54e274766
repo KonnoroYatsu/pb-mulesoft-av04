@@ -1,0 +1,33 @@
+package com.example.avalicao04.controller;
+
+import javax.validation.Valid;
+
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.example.avalicao04.form.PedidoForm;
+
+@RestController
+@RequestMapping("/payment")
+public class PaymentController {
+
+	@PostMapping
+	public ResponseEntity<?> receberPedido(@RequestBody @Valid PedidoForm pedidoForm){
+		
+		return ResponseEntity.ok(pedidoForm);
+	}
+	
+	@GetMapping
+	public ResponseEntity<?> listarPedidos(){
+		return ResponseEntity.ok().build();
+	}
+	
+	@GetMapping{"/id"}
+	public ResponseEntity<?> listarPedidoId(){
+		return ResponseEntity.ok().build();
+	}
+}

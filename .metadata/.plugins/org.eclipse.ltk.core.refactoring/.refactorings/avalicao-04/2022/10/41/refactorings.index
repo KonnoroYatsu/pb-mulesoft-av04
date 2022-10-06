@@ -1,0 +1,27 @@
+1665007343841	Move compilation unit
+1665007353670	Move compilation units
+1665007368755	Move compilation unit
+1665007518263	Delete element
+1665007526685	Rename type 'Pagamento'
+1665016673116	Delete element
+1665016703152	Delete element
+1665017754062	Rename type 'Pedido'
+1665017769206	Rename type 'Pagamento'
+1665075733003	Rename package 'com.example.avalicao04.model'
+1665078568623	Rename type 'Payment'
+1665079048483	Rename type 'payment'
+1665079645037	Move compilation unit
+1665079648471	Move compilation unit
+1665079735884	Rename type 'Item'
+1665079744631	Rename type 'PaymentTest'
+1665080874877	Rename package 'com.example.avalicao04.dto'
+1665080916367	Rename type 'PedidoDto'
+1665080925778	Rename type 'PaymentDto'
+1665080936219	Rename type 'ItemDto'
+1665081077476	Move compilation units
+1665081088447	Rename type 'ItemForm'
+1665081094441	Rename type 'PaymentForm'
+1665082985149	Rename package 'com.example.avalicao04.service'
+1665083029418	Rename type 'PedidoForm'
+1665083403040	Rename type 'Payment'
+1665088939202	Delete element

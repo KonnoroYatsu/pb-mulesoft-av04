@@ -1,0 +1,6 @@
+package com.example.avalicao04.model;
+
+public class Costumer {
+	private DocumentType documentType;
+	
+}

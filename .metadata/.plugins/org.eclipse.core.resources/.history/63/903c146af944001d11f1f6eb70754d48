@@ -1,0 +1,6 @@
+package com.example.avalicao04.model;
+
+public enum DocumentType {
+	CPF,
+	CNPJ;
+}

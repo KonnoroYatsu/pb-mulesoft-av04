@@ -1,0 +1,17 @@
+package com.example.avalicao04.model;
+
+import com.example.avalicao04.constant.DocumentType;
+
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+@Getter 
+@Setter
+@AllArgsConstructor 
+@NoArgsConstructor
+public class Costumer {
+	private DocumentType documentType;
+	private Long documenteNumber;	
+}

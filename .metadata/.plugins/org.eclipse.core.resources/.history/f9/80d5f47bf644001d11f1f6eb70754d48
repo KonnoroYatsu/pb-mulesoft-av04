@@ -1,0 +1,25 @@
+package com.example.avalicao04.model;
+
+import javax.validation.constraints.NotBlank;
+
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+@Getter @Setter
+@AllArgsConstructor @NoArgsConstructor
+public class Card {
+	@NotBlank
+	private String numberToken;
+	@NotBlank
+	private String cardholderName;
+	@NotBlank
+	private Long securityCode;
+	@NotBlank
+	private Brand brand;
+	@NotBlank
+	private int expirationMonth;
+	@NotBlank
+	private int expirationYear;
+}

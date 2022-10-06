@@ -1,0 +1,3 @@
+INSERT INTO PAYMENT (total, payment_id, payment_status, message) VALUES (56.12, '1c3a1fec-9c4b-4b86-a2a2-ff537d29d3c7', 'APPROVED', 'transaction approved');
+INSERT INTO PAYMENT (total, payment_id, payment_status, message) VALUES (98.53, '1c3a1fec-4b86-a2a2-ff537d29d3c7-9c4b', 'APPROVED', 'transaction OK');
+INSERT INTO PAYMENT (total, payment_id, payment_status, message) VALUES (108.84, '1c3a1fec-9c4bff537d29d3c7-4b86-a2a2', 'APPROVED', 'transaction Certo');

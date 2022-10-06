@@ -1,0 +1,11 @@
+package com.example.avalicao04.dto;
+
+import com.example.avalicao04.constant.PaymentStatus;
+
+public class PaymentDto {
+	private Long OrderId;
+	private Long total;
+	private String paymenteId;
+	private PaymentStatus paymentStatus;
+	private String message;
+}

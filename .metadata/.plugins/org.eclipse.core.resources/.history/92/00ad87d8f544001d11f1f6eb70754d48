@@ -1,0 +1,8 @@
+package com.example.avalicao04.model;
+
+public class Card {
+	private String numberToken;
+	private String cardholderName;
+	private Long securityCode;
+	private Brand brand;
+}

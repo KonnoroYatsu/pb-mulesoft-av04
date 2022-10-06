@@ -1,0 +1,5 @@
+package com.example.avalicao04.dto;
+
+public class PedidoDto {
+	
+}

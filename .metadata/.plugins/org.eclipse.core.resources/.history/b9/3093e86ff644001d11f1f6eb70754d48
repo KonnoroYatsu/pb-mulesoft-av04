@@ -1,0 +1,17 @@
+package com.example.avalicao04.model;
+
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+@Getter @Setter
+@AllArgsConstructor @NoArgsConstructor
+public class Card {
+	private String numberToken;
+	private String cardholderName;
+	private Long securityCode;
+	private Brand brand;
+	private int expirationMonth;
+	private int expirationYear;
+}
