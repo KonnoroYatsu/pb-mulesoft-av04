@@ -1,0 +1,13 @@
+package com.example.avalicao04.dto;
+
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+@Getter @Setter
+@AllArgsConstructor @NoArgsConstructor
+public class ClientAutenticationDto {
+	private String client_id = "client_id_mulesoft";
+	private String api_key = "91452c37-e343-4738-a94a-be113875cb2b";
+}

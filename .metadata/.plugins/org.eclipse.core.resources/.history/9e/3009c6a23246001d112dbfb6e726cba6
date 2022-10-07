@@ -1,0 +1,21 @@
+package com.example.avalicao04.dto;
+
+import com.example.avalicao04.constant.Currency;
+import com.example.avalicao04.constant.PaymentType;
+import com.example.avalicao04.form.PaymentForm;
+
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+@Getter @Setter
+@AllArgsConstructor @NoArgsConstructor
+public class PaymentRequestDto {
+    private String sellerId;
+    private CustomerDto customer;
+    private PaymentType paymentType;
+    private Currency currency;
+    private Double transactionAmount;
+    private PaymentForm payment;
+}

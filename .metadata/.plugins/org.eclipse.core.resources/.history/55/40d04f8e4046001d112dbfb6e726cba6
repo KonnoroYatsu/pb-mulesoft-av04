@@ -1,0 +1,8 @@
+package com.example.avalicao04.autentication;
+
+import java.util.Date;
+
+public class TokenExpiration {
+    private Date creationTime;
+    private Date expirationTime;
+}

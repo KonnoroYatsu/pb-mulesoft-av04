@@ -1,0 +1,14 @@
+package com.example.avalicao04.dto;
+
+import com.example.avalicao04.constant.Currency;
+import com.example.avalicao04.constant.PaymentType;
+import com.example.avalicao04.model.Payment;
+
+public class PaymentRequestDto {
+    private String sellerId;
+    private Customer customer;
+    private PaymentType paymentType;
+    private Currency currency;
+    private Double transactionAmount;
+    private Payment payment;
+}

@@ -1,0 +1,8 @@
+package com.example.avalicao04.pbBank;
+
+public class Authorization {
+    private Long autorizationCode;
+    private String autorizationAt;
+    private Long reasonCode;
+    private String reasonMessage;
+}

@@ -18,25 +18,24 @@ import com.example.avalicao04.form.OrderForm;
 import com.example.avalicao04.service.PaymentService;
 
 @RestController
-@RequestMapping("/payment")
+@RequestMapping("api/v1/order/payment")
 public class PaymentController {
 	
 	@Autowired
 	PaymentService paymentService;
 	
-	@PostMapping
-	public ResponseEntity<?> receberPedido(@RequestBody @Valid OrderForm orderForm){
-		return ResponseEntity.ok(orderForm);
-	}
-	
 	@GetMapping
 	public ResponseEntity<List<PaymentDto>> listarPedidos(){
-		List<PaymentDto> paymentsDto = paymentService.showAllPayments();
-		return ResponseEntity.ok(paymentsDto);
+		return ResponseEntity.ok(paymentService.showAllPayments());
 	}
 	
-	@GetMapping("{id}")
+	@GetMapping("/{id}")
 	public ResponseEntity<PaymentDto> listarPedidoId(@PathVariable Long id){
 		return paymentService.showOnePayment(id);
+	}
+		
+	@PostMapping
+	public ResponseEntity<?> receberPedido(@RequestBody @Valid OrderForm orderForm){
+	    return paymentService.makePayment(orderForm);
 	}
 }

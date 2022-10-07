@@ -1,0 +1,21 @@
+//package com.example.avalicao04.form;
+//
+//import com.example.avalicao04.constant.PaymentStatus;
+//import com.fasterxml.jackson.annotation.JsonProperty;
+//
+//public class PaymentForm {
+//    @JsonProperty("order_id")
+//    private Long OrderId;
+//    
+//    @JsonProperty("total")
+//    private Double total;
+//    
+//    @JsonProperty("payment_id")
+//    private String paymenteId;
+//    
+//    @JsonProperty("payment_status")
+//    private PaymentStatus paymentStatus;
+//    
+//    @JsonProperty("message")
+//    private String message;
+//}

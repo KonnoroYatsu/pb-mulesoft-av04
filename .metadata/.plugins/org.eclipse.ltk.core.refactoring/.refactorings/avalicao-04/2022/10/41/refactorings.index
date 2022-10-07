@@ -25,3 +25,23 @@
 1665083029418	Rename type 'PedidoForm'
 1665083403040	Rename type 'Payment'
 1665088939202	Delete element
+1665092494676	Rename type 'ClientDto'
+1665096033579	Delete element
+1665096038071	Move compilation unit
+1665096046038	Rename type 'AuthDto'
+1665096089944	Rename type 'Tokken'
+1665140585553	Rename type 'Saller'
+1665141035726	Rename type 'Item'
+1665141042005	Move compilation unit
+1665141050379	Rename type 'Payment'
+1665141054187	Move compilation unit
+1665141090704	Rename package 'com.example.avalicao04.model'
+1665141530656	Rename type 'SallerAutentication'
+1665144260491	Rename type 'PaymentForm'
+1665146402672	Move compilation unit
+1665150159187	Delete element
+1665157710450	Move compilation unit
+1665157720789	Move compilation unit
+1665157757053	Move compilation unit
+1665157780217	Move compilation unit
+1665166543809	Delete element

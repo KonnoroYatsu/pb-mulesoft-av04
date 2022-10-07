@@ -1,0 +1,8 @@
+package com.example.avalicao04.model;
+
+public class Saller {
+    private String sellerId;
+    private String sellerName;
+    private String sellerClientId;
+    private String sellerApiKey;
+}

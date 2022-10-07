@@ -1,0 +1,19 @@
+package com.example.avalicao04.pbBank;
+
+import javax.validation.constraints.NotNull;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+public class Authorization {
+    @NotNull @JsonProperty("authorization_code")
+    private Long authorizationCode;
+    
+    @NotNull @JsonProperty("authorization_at")
+    private String authorizationnAt;
+    
+    @NotNull @JsonProperty("reason_code")
+    private Long reasonCode;
+    
+    @NotNull @JsonProperty("reason_message")
+    private String reasonMessage;
+}

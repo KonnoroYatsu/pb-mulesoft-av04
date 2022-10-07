@@ -1,0 +1,36 @@
+package com.example.avalicao04.entity;
+
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+@Entity @Table(name = "payment")
+@Getter @Setter
+@AllArgsConstructor @NoArgsConstructor
+public class PaymentEntity {
+	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+	@JsonProperty("order_id")
+	private Long OrderId;
+	
+	@NotNull @JsonProperty("total")
+	private Double total;
+	
+	@NotNull @JsonProperty("payment_id")
+	private String paymentId;
+	
+	@NotNull @JsonProperty("payment_status")
+	private String paymentStatus;
+	
+	@NotNull @JsonProperty("message")
+	private String message;
+}
