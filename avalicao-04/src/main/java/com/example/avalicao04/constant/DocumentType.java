@@ -1,6 +1,13 @@
 package com.example.avalicao04.constant;
 
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+
+@Getter
+@RequiredArgsConstructor
 public enum DocumentType {
-	CPF,
-	CNPJ;
+	CPF("cpf"),
+	CNPJ("cnpj");
+    
+    private final String name;
 }

@@ -1,0 +1,13 @@
+package com.example.avalicao04.constant;
+
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+
+@Getter
+@RequiredArgsConstructor
+public enum PaymentStatus {
+	APPROVED("aproved"),
+	REJECTED("rejected");
+    
+    private final String name;
+}

@@ -1,0 +1,46 @@
+package com.example.avalicao04.form;
+
+import javax.validation.constraints.Digits;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+@Getter @Setter
+@AllArgsConstructor @NoArgsConstructor
+public class CardForm {
+	@NotNull (message = "card_number must not be null")
+	@JsonProperty("card_number")
+	private Long cardNumber;
+	
+	@NotNull (message = "cardholder_name must not be null")
+	@NotEmpty (message = "cardholder_name must not be empty")
+	@JsonProperty("cardholder_name")
+	private String cardholderName;
+	
+	@NotNull (message = "security_code must not be null")
+    @Digits(integer = 3, fraction = 0, message = "security_code must only be 3 digit numeric")
+	@JsonProperty("security_code")
+	private int securityCode;
+	
+	@NotNull (message = "expiration_month must not be null")
+	@Min(value = 1, message = "expiration_month must be greater than 0")
+	@JsonProperty("expiration_month")
+	private int expirationMonth;
+	
+	@NotNull (message = "expiration_year must not be null")
+	@JsonProperty("expiration_year")
+	private int expirationYear;
+	
+	@NotNull (message = "brand must not be null")
+	@NotEmpty (message = "brand must not be empty")
+	@JsonProperty("brand")
+	private String brand;
+}

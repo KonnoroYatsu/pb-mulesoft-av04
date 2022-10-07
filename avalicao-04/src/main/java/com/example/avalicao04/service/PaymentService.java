@@ -1,5 +1,6 @@
 package com.example.avalicao04.service;
 
+import java.net.URI;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -9,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import com.example.avalicao04.autentication.Token;
 import com.example.avalicao04.dto.PaymentDto;
@@ -45,7 +47,7 @@ public class PaymentService {
 		return ResponseEntity.notFound().build();
 	}
 	
-	public ResponseEntity<PaymentEntity> makePayment(OrderForm orderForm) {	
+	public ResponseEntity<PaymentEntity> makePayment(OrderForm orderForm, UriComponentsBuilder uriBuilder) {	
 		if(token == null || tokenExpirationTime.compareTo(LocalDateTime.now()) < 0) {
 		    token = MappersUtil.authenticate();
 	        tokenExpirationTime = LocalDateTime.now().plusMinutes(3);
@@ -56,6 +58,7 @@ public class PaymentService {
 		PaymentEntity paymentEntity = MappersUtil.convertPaymentResponseFormToPaymentEntity(paymentResponseForm);
 		paymentRepository.save(paymentEntity);
 		
-		return ResponseEntity.ok(paymentEntity);
+		URI uri = uriBuilder.path("/{id}").buildAndExpand(paymentEntity.getOrderId()).toUri();
+		return ResponseEntity.created(uri).body(paymentEntity);    
 	}
 }

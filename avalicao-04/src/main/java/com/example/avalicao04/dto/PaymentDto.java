@@ -2,6 +2,7 @@ package com.example.avalicao04.dto;
 
 import javax.validation.constraints.NotNull;
 
+import com.example.avalicao04.constant.PaymentStatus;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import lombok.AllArgsConstructor;
@@ -22,7 +23,7 @@ public class PaymentDto {
 	private String paymenteId;
     
     @NotNull @JsonProperty("payment_status")
-	private String paymentStatus;
+	private PaymentStatus paymentStatus;
     
     @NotNull @JsonProperty("message")
 	private String message;

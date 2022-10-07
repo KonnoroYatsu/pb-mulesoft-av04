@@ -3,7 +3,10 @@ package com.example.avalicao04.form;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.validation.Valid;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Positive;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -15,24 +18,39 @@ import lombok.Setter;
 @Getter @Setter
 @AllArgsConstructor @NoArgsConstructor
 public class OrderForm {
-	@NotNull @JsonProperty("cpf")
-	private Long cpf;
+	@NotNull (message = "cpf must not be null")
+	@NotEmpty (message = "cpf must not be empty")
+	@JsonProperty("cpf")
+	private String cpf;
 	
-	@NotNull @JsonProperty("items")
+	@NotNull (message = "items must not be null")
+	@NotEmpty (message = "items must not be empty")
+	@Valid
+	@JsonProperty("items")
 	private List<ItemForm> items = new ArrayList<>();
 	
-	@NotNull @JsonProperty("shipping")
+	@NotNull (message = "shipping must not be null")
+	@Positive(message = "shipping must be greater than 0")
+	@JsonProperty("shipping")
 	private Double shipping;
 	
-	@NotNull @JsonProperty("discount")
+	@NotNull (message = "discount must not be null")
+	@Positive(message = "discount must be greater than 0")
+	@JsonProperty("discount")
 	private Double discount;
 	
-	@NotNull @JsonProperty("payment_type")
+	@NotNull (message = "payment_type must not be null")
+	@NotEmpty (message = "payment_type must not be empty")
+	@JsonProperty("payment_type")
 	private String paymentType;
 	
-	@NotNull @JsonProperty("currency_type")
+	@NotNull (message = "currency_type must not be null")
+	@NotEmpty (message = "currency_type must not be empty")
+	@JsonProperty("currency_type")
 	private String currency;
 	
-	@NotNull @JsonProperty("payment")
+	@NotNull (message = "payment must not be null")
+	@Valid
+	@JsonProperty("payment")
 	private CardForm card;
 }

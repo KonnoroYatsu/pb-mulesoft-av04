@@ -1,6 +1,10 @@
 package com.example.avalicao04.form;
 
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -12,21 +16,36 @@ import lombok.Setter;
 @Getter @Setter
 @AllArgsConstructor @NoArgsConstructor
 public class CardForm {
-	@NotNull @JsonProperty("card_number")
-	private Long cardNumber;
+	@NotNull (message = "card_number must not be null")
+	@NotEmpty (message = "card_number must not be empty")
+	@JsonProperty("card_number")
+	private String cardNumber;
 	
-	@NotNull @JsonProperty("cardholder_name")
+	@NotNull (message = "cardholder_name must not be null")
+	@NotEmpty (message = "cardholder_name must not be empty")
+	@JsonProperty("cardholder_name")
 	private String cardholderName;
 	
-	@NotNull @JsonProperty("security_code")
-	private int securityCode;
+	@NotNull (message = "security_code must not be null")
+    @Size(min = 3, max = 3 , message = "security_code must be 3 digit numeric")
+	@Min(value = 1, message = "security_code must be greater than 0")
+	@JsonProperty("security_code")
+	private String securityCode;
 	
-	@NotNull @JsonProperty("expiration_month")
+	@NotNull (message = "expiration_month must not be null")
+	@Min (value = 1, message = "expiration_month must be greater than 0")
+	@Max (value = 12, message = "expiration_month must be less than 13")
+	@JsonProperty("expiration_month")
 	private int expirationMonth;
 	
-	@NotNull @JsonProperty("expiration_year")
-	private int expirationYear;
+	@NotNull (message = "expiration_year must not be null")
+	@Size(min = 2, max = 2 , message = "expiration_year must be 2 digit numeric")
+    @Min(value = 10, message = "expiration_year must be greater than 10")
+	@JsonProperty("expiration_year")
+	private String expirationYear;
 	
-	@NotNull @JsonProperty("brand")
+	@NotNull (message = "brand must not be null")
+	@NotEmpty (message = "brand must not be empty")
+	@JsonProperty("brand")
 	private String brand;
 }

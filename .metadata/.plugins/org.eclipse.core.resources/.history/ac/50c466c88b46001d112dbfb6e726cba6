@@ -1,0 +1,41 @@
+package com.example.avalicao04.dto;
+
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+
+import com.example.avalicao04.constant.Brand;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+@Getter @Setter
+@AllArgsConstructor @NoArgsConstructor
+public class CardDto {
+    @NotNull (message = "number_token must not be null")
+    @NotEmpty (message = "card_number must not be empty")
+    @JsonProperty("number_token")
+    private String cardNumber;
+    
+    @NotNull (message = "cardholder_name must not be null")
+    @JsonProperty("cardholder_name")
+    private String cardholderName;
+    
+    @NotNull (message = "security_code must not be null")
+    @JsonProperty("security_code")
+    private String securityCode;
+    
+    @NotNull (message = "expiration_month must not be null")
+    @JsonProperty("expiration_month")
+    private int expirationMonth;
+    
+    @NotNull (message = "expiration_year must not be null")
+    @JsonProperty("expiration_year")
+    private String expirationYear;
+    
+    @NotNull (message = "brand must not be null")
+    @JsonProperty("brand")
+    private Brand brand;
+}

@@ -1,12 +1,15 @@
 package com.example.avalicao04.entity;
 
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
+import com.example.avalicao04.constant.PaymentStatus;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import lombok.AllArgsConstructor;
@@ -29,7 +32,8 @@ public class PaymentEntity {
 	private String paymentId;
 	
 	@NotNull @JsonProperty("payment_status")
-	private String paymentStatus;
+	@Enumerated(EnumType.STRING)
+	private PaymentStatus paymentStatus;
 	
 	@NotNull @JsonProperty("message")
 	private String message;

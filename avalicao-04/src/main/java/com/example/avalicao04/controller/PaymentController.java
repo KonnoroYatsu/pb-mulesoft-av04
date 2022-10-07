@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import com.example.avalicao04.dto.PaymentDto;
 import com.example.avalicao04.form.OrderForm;
@@ -35,7 +36,8 @@ public class PaymentController {
 	}
 		
 	@PostMapping
-	public ResponseEntity<?> receberPedido(@RequestBody @Valid OrderForm orderForm){
-	    return paymentService.makePayment(orderForm);
+	public ResponseEntity<?> receberPedido(@RequestBody @Valid OrderForm orderForm,
+	        UriComponentsBuilder uriBuilder){
+	    return paymentService.makePayment(orderForm, uriBuilder);
 	}
 }

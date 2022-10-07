@@ -1,6 +1,8 @@
 package com.example.avalicao04.form;
 
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Positive;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -12,12 +14,18 @@ import lombok.Setter;
 @Getter @Setter
 @AllArgsConstructor @NoArgsConstructor
 public class ItemForm {
-	@NotNull @JsonProperty("item")
+    @NotNull (message = "item must not be null")
+    @NotEmpty (message = "item must not be empty")
+	@JsonProperty("item")
 	private String item;
 	
-	@NotNull @JsonProperty("value")
+	@NotNull (message = "value must not be null")
+	@Positive(message = "value must be greater than 0")
+	@JsonProperty("value")
 	private Double price;
 	
-	@NotNull @JsonProperty("qty")
+	@NotNull (message = "qty must not be null")
+	@Positive(message = "qty must be greater than 0")
+	@JsonProperty("qty")
 	private int qty;
 }

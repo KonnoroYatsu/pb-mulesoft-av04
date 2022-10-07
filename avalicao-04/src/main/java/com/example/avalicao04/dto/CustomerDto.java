@@ -2,6 +2,7 @@ package com.example.avalicao04.dto;
 
 import javax.validation.constraints.NotNull;
 
+import com.example.avalicao04.constant.DocumentType;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import lombok.AllArgsConstructor;
@@ -13,8 +14,8 @@ import lombok.Setter;
 @AllArgsConstructor @NoArgsConstructor
 public class CustomerDto {
     @NotNull @JsonProperty("document_type")
-    private String documentType;
+    private DocumentType documentType;
     
     @NotNull @JsonProperty("document_number")
-    private Long documentNumber;
+    private String documentNumber;
 }

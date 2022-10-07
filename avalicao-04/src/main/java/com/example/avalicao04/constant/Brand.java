@@ -1,8 +1,15 @@
 package com.example.avalicao04.constant;
 
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+
+@Getter
+@RequiredArgsConstructor
 public enum Brand {
-	MASTERCARD,
-	VISA,
-	ELO,
-	AMERICAN_EXPRESS;
+	MASTERCARD("mastercard"),
+	VISA("visa"),
+	ELO("elo"),
+	AMERICAN_EXPRESS("american-experess");
+    
+    private final String name;
 }
