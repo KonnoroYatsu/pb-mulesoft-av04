@@ -1,0 +1,161 @@
+package com.example.avalicao04.util;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.junit.Assert;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.mockito.MockitoAnnotations;
+
+import com.example.avalicao04.autentication.Token;
+import com.example.avalicao04.constant.PaymentStatus;
+import com.example.avalicao04.dto.CardDto;
+import com.example.avalicao04.dto.PaymentDto;
+import com.example.avalicao04.entity.PaymentEntity;
+import com.example.avalicao04.form.CardForm;
+import com.example.avalicao04.form.ItemForm;
+import com.example.avalicao04.form.OrderForm;
+import com.example.avalicao04.pbBank.Authorization;
+import com.example.avalicao04.pbBank.PaymentResponseForm;
+import com.example.avalicao04.service.PaymentService;
+
+class MappersUtilTest {
+    
+    private MappersUtil mappersUtil;
+    
+    @BeforeEach
+    void inicialize() {
+        this.mappersUtil = new MappersUtil();
+    }
+
+    @Test
+    void deveriaConverterPaymentEntityParaPaymentDto() {
+        PaymentEntity paymentEntity = criarPaymentsEntity().get(0);
+        
+        PaymentDto paymentDto = mappersUtil.convertPaymentEntityToDto(paymentEntity);
+        
+        Assert.assertEquals(paymentEntity.getOrderId(), paymentDto.getOrderId());
+        Assert.assertEquals(paymentEntity.getTotal(), paymentDto.getTotal());
+        Assert.assertEquals(paymentEntity.getPaymentId(), paymentDto.getPaymentId());
+        Assert.assertEquals(paymentEntity.getPaymentStatus(), paymentDto.getPaymentStatus());
+        Assert.assertEquals(paymentEntity.getMessage(), paymentDto.getMessage());
+    }
+    
+    @Test 
+    void deveriaConverterCardFormParaCardDto(){
+        CardForm cardForm = criarCardForm();
+        
+        CardDto cardDto = mappersUtil.convertCardFormToDto(cardForm);
+        
+        Assert.assertEquals(cardForm.getCardNumber(), cardDto.getCardNumber());
+        Assert.assertEquals(cardForm.getCardholderName(), cardDto.getCardholderName());
+        Assert.assertEquals(cardForm.getSecurityCode(), cardDto.getSecurityCode());
+        Assert.assertEquals(cardForm.getExpirationMonth(), cardDto.getExpirationMonth());
+        Assert.assertEquals(cardForm.getExpirationYear(), cardDto.getExpirationYear());
+        Assert.assertEquals(cardForm.getBrand(), cardDto.getBrand().toString());
+    }
+    
+    @Test
+    void deveriaConverterPaymentResponseFormParaPaymentEntity() {
+        PaymentResponseForm paymentResponseForm = criarPaymentResponseForm();
+        
+        PaymentEntity paymentEntity = mappersUtil
+                .convertPaymentResponseFormToPaymentEntity(paymentResponseForm);
+    }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    private List<PaymentEntity> criarPaymentsEntity() {
+        List<PaymentEntity> paymentsEntity = new ArrayList<>();
+        paymentsEntity.add(new PaymentEntity(
+                12345678910L,
+                234.9,
+                "1c3a1fec-9c4b-4b86-a2a2-ff537d29d3c7",
+                PaymentStatus.APPROVED,
+                "transaction approved"));
+
+        paymentsEntity.add(new PaymentEntity(
+                12345288910L,
+                423.2,
+                "1c3a1fec-4b86-a2a2-ff537d-9c4b-29d3c7",
+                PaymentStatus.REPROVED,
+                "transaction reproved"));
+        return paymentsEntity;
+    }
+    
+    private Token criarToken() {
+        Token token = new Token("akjhfdjkahdf&odihfjakbwe", "Bearer", "180");
+        return token;
+    }
+    
+    private OrderForm criarOrderForm() {
+        CardForm cardForm = new CardForm(
+                "6721546712123",
+                "JOAO MURILO",
+                "312",
+                8,
+                "10",
+                "MASTERCARD");
+
+        List<ItemForm> itemsForm = new ArrayList<>();
+
+        itemsForm.add(new ItemForm(
+                "Item 01",
+                12.45,
+                10));
+
+        itemsForm.add(new ItemForm(
+                "Item 01",
+                12.45,
+                10));
+
+        OrderForm orderForm = new OrderForm(
+                "43209756409",
+                itemsForm,
+                9.87,
+                3.43,
+                "CREDIT_CARD",
+                "BRL",
+                cardForm);
+
+        return orderForm;
+    }
+    
+    private CardForm criarCardForm() {
+        CardForm cardForm = new CardForm(
+                "6721546712123",
+                "JOAO MURILO",
+                "312",
+                8,
+                "10",
+                "MASTERCARD");
+        return cardForm;
+    }
+    
+    private PaymentResponseForm criarPaymentResponseForm() {
+        Authorization authorization = new Authorization (
+                1659361102747L,
+                "2022-08-01T13:38:32.747325",
+                0L,
+                "transaction approved");
+        
+        PaymentResponseForm paymentResponseForm = new PaymentResponseForm(
+                "00a57182-082e-4230-865c-a2840f1c28d9",
+                "6eb2412c-165a-41cd-b1d9-76c575d70a28",
+                67.9,
+                "BRL",
+                "APPROVED",
+                "2022-08-01T13:38:22.747317",
+                authorization);
+        return paymentResponseForm;
+    }
+}

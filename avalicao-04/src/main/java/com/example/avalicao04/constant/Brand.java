@@ -9,7 +9,7 @@ public enum Brand {
 	MASTERCARD("mastercard"),
 	VISA("visa"),
 	ELO("elo"),
-	AMERICAN_EXPRESS("american-experess");
+	AMERICAN_EXPRESS("american-express");
     
     private final String name;
 }

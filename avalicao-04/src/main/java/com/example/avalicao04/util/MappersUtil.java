@@ -36,7 +36,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 @Service
 public class MappersUtil {
 
-    public static PaymentDto convertPaymentEntityToDto(PaymentEntity paymentEntity) {
+    public PaymentDto convertPaymentEntityToDto(PaymentEntity paymentEntity) {
         PaymentDto paymentDto = new PaymentDto(
                 paymentEntity.getOrderId(),
                 paymentEntity.getTotal(),
@@ -45,8 +45,59 @@ public class MappersUtil {
                 paymentEntity.getMessage());
         return paymentDto;
     }
-
-    public static String createPaymentRequestBody(OrderForm orderForm) {
+    
+    public CardDto convertCardFormToDto(CardForm cardForm) {        
+        CardDto cardDto = new CardDto(
+                cardForm.getCardNumber(),
+                cardForm.getCardholderName(),
+                cardForm.getSecurityCode(),
+                cardForm.getExpirationMonth(),
+                cardForm.getExpirationYear(),
+                this.convertStringToBrand(cardForm.getBrand()));
+        return cardDto;
+    }
+    
+    public PaymentEntity convertPaymentResponseFormToPaymentEntity(PaymentResponseForm paymentResponseForm) {
+        PaymentEntity paymentEntity = new PaymentEntity();
+        paymentEntity.setTotal(paymentResponseForm.getTransactionAmount());
+        paymentEntity.setPaymentId(paymentResponseForm.getPaymentId());
+        paymentEntity.setPaymentStatus(this.convertStringToPaymentStatus(paymentResponseForm.getStatus()));
+        paymentEntity.setMessage(paymentResponseForm.getAuthorization().getReasonMessage());
+        return paymentEntity;
+    }
+    
+    public Brand convertStringToBrand(String brand) {
+        return Arrays.stream(Brand.values()).filter(br -> br.getName().equalsIgnoreCase(brand))
+            .findFirst().orElseThrow(() -> new InvalidValueException(
+                    "The value for 'brand' is invalid: '" + brand + "'"));   
+    }
+    
+    public Currency convertStringToCurrency(String currency) {
+        return Arrays.stream(Currency.values()).filter(cr -> cr.getName().equalsIgnoreCase(currency))
+            .findFirst().orElseThrow(() -> new InvalidValueException(
+                    "The value for 'currency' is invalid: '" + currency + "'"));   
+    }
+    
+    public PaymentType convertStringToPaymentType(String paymentType) {
+        return Arrays.stream(PaymentType.values()).filter(cr -> cr.getName().equalsIgnoreCase(paymentType))
+            .findFirst().orElseThrow(() -> new InvalidValueException(
+                    "The value for 'payment_type' is invalid: '" + paymentType + "'"));   
+    }
+    
+    public PaymentStatus convertStringToPaymentStatus(String paymentStatus) {
+        return Arrays.stream(PaymentStatus.values()).filter(ps -> ps.getName().equalsIgnoreCase(paymentStatus))
+            .findFirst().orElseThrow(() -> new InvalidValueException(
+                    "The value for 'payment_status' is invalid: '" + paymentStatus + "'"));   
+    }
+    
+    public HttpHeaders createPaymentRequestHeader(Token token) {
+        HttpHeaders header = new HttpHeaders();
+        header.setContentType(MediaType.APPLICATION_JSON);
+        header.add("Authorization", "Bearer " + token.getAccessToken());
+        return header;
+    }
+    
+    public String createPaymentRequestBody(OrderForm orderForm) {
         SellerAutentication sellerAutentication = new SellerAutentication();
         CustomerDto costumerDto = new CustomerDto(
                 DocumentType.CPF, 
@@ -66,12 +117,11 @@ public class MappersUtil {
         PaymentRequestDto paymentRequestBody = new PaymentRequestDto(
                 sellerAutentication.getSellerId(),
                 costumerDto,
-                MappersUtil.convertStringToPaymentType(orderForm.getPaymentType()),
-                MappersUtil.convertStringToCurrency(orderForm.getCurrency()),
+                this.convertStringToPaymentType(orderForm.getPaymentType()),
+                this.convertStringToCurrency(orderForm.getCurrency()),
                 total,
-                MappersUtil.convertCardFormToDto(orderForm.getCard()));
-                
-        
+                this.convertCardFormToDto(orderForm.getCard()));
+               
         ObjectMapper mapper = new ObjectMapper();
         String paymentRequestBodyToJSON = new String();
         try {
@@ -82,46 +132,7 @@ public class MappersUtil {
         return paymentRequestBodyToJSON;
     }
 
-    public static HttpHeaders createPaymentRequestHeader(Token token) {
-        HttpHeaders header = new HttpHeaders();
-        header.setContentType(MediaType.APPLICATION_JSON);
-        header.add("Authorization", "Bearer " + token.getAccessToken());
-        return header;
-    }
-
-    public static PaymentResponseForm sendPaymentRequest(String paymentRequestBodyJSON,
-            HttpHeaders paymentRequestHeader) {
-        RestTemplate rest = new RestTemplate();
-        String url = "https://pb-getway-payment.herokuapp.com/v1/payments/credit-card";
-
-        HttpEntity<String> httpEntity = new HttpEntity<String>(paymentRequestBodyJSON, paymentRequestHeader);
-        ResponseEntity<PaymentResponseForm> response = rest.exchange(url, HttpMethod.POST, httpEntity,
-                PaymentResponseForm.class);
-        return response.getBody();
-    }
-
-    public static PaymentEntity convertPaymentResponseFormToPaymentEntity(PaymentResponseForm paymentResponseForm) {
-        PaymentEntity paymentEntity = new PaymentEntity();
-        paymentEntity.setTotal(paymentResponseForm.getTransactionAmount());
-        paymentEntity.setPaymentId(paymentResponseForm.getPaymentId());
-        paymentEntity.setPaymentStatus(MappersUtil
-                .convertStringToPaymentStatus(paymentResponseForm.getStatus()));
-        paymentEntity.setMessage(paymentResponseForm.getAuthorization().getReasonMessage());
-        return paymentEntity;
-    }
-
-    public static CardDto convertCardFormToDto(CardForm cardForm) {
-        CardDto cardDto = new CardDto(
-                cardForm.getCardNumber(),
-                cardForm.getCardholderName(),
-                cardForm.getSecurityCode(),
-                cardForm.getExpirationMonth(),
-                cardForm.getExpirationYear(),
-                MappersUtil.convertStringToBrand(cardForm.getBrand()));
-        return cardDto;
-    }
-
-    public static Token authenticate() {
+    public Token authenticate() {
         String url = "https://pb-getway-payment.herokuapp.com/v1/auth";
         RestTemplate restTemplate = new RestTemplate();
         SellerAutentication sellerAutentication = new SellerAutentication();
@@ -136,23 +147,14 @@ public class MappersUtil {
         return token;
     }
 
-    public static Brand convertStringToBrand(String brand) {
-        return Arrays.stream(Brand.values()).filter(br -> br.getName().equalsIgnoreCase(brand))
-            .findFirst().orElseThrow(() -> new InvalidValueException("The value for 'brand' is invalid: '" + brand + "'"));   
-    }
-    
-    public static Currency convertStringToCurrency(String currency) {
-        return Arrays.stream(Currency.values()).filter(cr -> cr.getName().equalsIgnoreCase(currency))
-            .findFirst().orElseThrow(() -> new InvalidValueException("The value for 'currency' is invalid: '" + currency + "'"));   
-    }
-    
-    public static PaymentType convertStringToPaymentType(String paymentType) {
-        return Arrays.stream(PaymentType.values()).filter(cr -> cr.getName().equalsIgnoreCase(paymentType))
-            .findFirst().orElseThrow(() -> new InvalidValueException("The value for 'payment_type' is invalid: '" + paymentType + "'"));   
-    }
-    
-    public static PaymentStatus convertStringToPaymentStatus(String paymentStatus) {
-        return Arrays.stream(PaymentStatus.values()).filter(ps -> ps.getName().equalsIgnoreCase(paymentStatus))
-            .findFirst().orElseThrow(() -> new InvalidValueException("The value for 'payment_status' is invalid: '" + paymentStatus + "'"));   
+    public PaymentResponseForm sendPaymentRequest(String paymentRequestBodyJSON,
+            HttpHeaders paymentRequestHeader) {
+        RestTemplate rest = new RestTemplate();
+        String url = "https://pb-getway-payment.herokuapp.com/v1/payments/credit-card";
+
+        HttpEntity<String> httpEntity = new HttpEntity<String>(paymentRequestBodyJSON, paymentRequestHeader);
+        ResponseEntity<PaymentResponseForm> response = rest.exchange(url, HttpMethod.POST, httpEntity,
+                PaymentResponseForm.class);
+        return response.getBody();
     }
 }

@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Rename type &apos;com.example.avalicao04.util.ValidacaoHandler&apos; to &apos;HandlerValidation&apos;&#x0D;&#x0A;- Original project: &apos;avalicao-04&apos;&#x0D;&#x0A;- Original element: &apos;com.example.avalicao04.util.ValidacaoHandler&apos;&#x0D;&#x0A;- Renamed element: &apos;com.example.avalicao04.util.HandlerValidation&apos;&#x0D;&#x0A;- Update references to refactored element&#x0D;&#x0A;- Update textual occurrences in comments and strings" description="Rename type &apos;ValidacaoHandler&apos;" flags="589830" id="org.eclipse.jdt.ui.rename.type" input="/src\/main\/java=/optional=/true=/=/maven.pomderived=/true=/&lt;com.example.avalicao04.util{ValidacaoHandler.java[ValidacaoHandler" matchStrategy="1" name="HandlerValidation" qualified="false" references="true" similarDeclarations="false" stamp="1665440291332" textual="false" version="1.0"/>
+</session>

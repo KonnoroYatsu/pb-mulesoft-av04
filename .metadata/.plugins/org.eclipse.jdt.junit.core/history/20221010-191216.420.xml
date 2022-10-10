@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?><testrun name="MappersUtilTest" project="avalicao-04" tests="11" started="11" failures="0" errors="1" ignored="0">
+  <testsuite name="com.example.avalicao04.util.MappersUtilTest" time="0.377" displayname="MappersUtilTest" uniqueid="[engine:junit-jupiter]/[class:com.example.avalicao04.util.MappersUtilTest]">
+    <testcase name="deveriaRetornarUmaCurrencyQuandoReceberUmaStringDeCurrency" classname="com.example.avalicao04.util.MappersUtilTest" time="0.0" displayname="deveriaRetornarUmaCurrencyQuandoReceberUmaStringDeCurrency()" uniqueid="[engine:junit-jupiter]/[class:com.example.avalicao04.util.MappersUtilTest]/[method:deveriaRetornarUmaCurrencyQuandoReceberUmaStringDeCurrency()]"/>
+    <testcase name="deveriaRetornarUmInvalidValueExceptionQuandoReceberUmaStringDeCurrencyInvalida" classname="com.example.avalicao04.util.MappersUtilTest" time="0.0" displayname="deveriaRetornarUmInvalidValueExceptionQuandoReceberUmaStringDeCurrencyInvalida()" uniqueid="[engine:junit-jupiter]/[class:com.example.avalicao04.util.MappersUtilTest]/[method:deveriaRetornarUmInvalidValueExceptionQuandoReceberUmaStringDeCurrencyInvalida()]"/>
+    <testcase name="deveriaConverterCardFormParaCardDto" classname="com.example.avalicao04.util.MappersUtilTest" time="0.0" displayname="deveriaConverterCardFormParaCardDto()" uniqueid="[engine:junit-jupiter]/[class:com.example.avalicao04.util.MappersUtilTest]/[method:deveriaConverterCardFormParaCardDto()]"/>
+    <testcase name="deveriaConverterPaymentResponseFormParaPaymentEntity" classname="com.example.avalicao04.util.MappersUtilTest" time="0.0" displayname="deveriaConverterPaymentResponseFormParaPaymentEntity()" uniqueid="[engine:junit-jupiter]/[class:com.example.avalicao04.util.MappersUtilTest]/[method:deveriaConverterPaymentResponseFormParaPaymentEntity()]"/>
+    <testcase name="deveriaRetornarUmaBrandQuandoReceberUmaStringDeBrand" classname="com.example.avalicao04.util.MappersUtilTest" time="0.0" displayname="deveriaRetornarUmaBrandQuandoReceberUmaStringDeBrand()" uniqueid="[engine:junit-jupiter]/[class:com.example.avalicao04.util.MappersUtilTest]/[method:deveriaRetornarUmaBrandQuandoReceberUmaStringDeBrand()]"/>
+    <testcase name="deveriaRetornarUmPaymentTypeQuandoReceberUmaStringDePaymentType" classname="com.example.avalicao04.util.MappersUtilTest" time="0.0" displayname="deveriaRetornarUmPaymentTypeQuandoReceberUmaStringDePaymentType()" uniqueid="[engine:junit-jupiter]/[class:com.example.avalicao04.util.MappersUtilTest]/[method:deveriaRetornarUmPaymentTypeQuandoReceberUmaStringDePaymentType()]">
+      <error>com.example.avalicao04.exception.InvalidValueException: The value for 'payment_type' is invalid: 'CREDIT-CARD'&#13;
+	at com.example.avalicao04.util.MappersUtil.lambda$5(MappersUtil.java:83)&#13;
+	at java.base/java.util.Optional.orElseThrow(Optional.java:403)&#13;
+	at com.example.avalicao04.util.MappersUtil.convertStringToPaymentType(MappersUtil.java:83)&#13;
+	at com.example.avalicao04.util.MappersUtilTest.deveriaRetornarUmPaymentTypeQuandoReceberUmaStringDePaymentType(MappersUtilTest.java:124)&#13;
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)&#13;
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)&#13;
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)&#13;
+	at java.base/java.lang.reflect.Method.invoke(Method.java:568)&#13;
+	at org.junit.platform.commons.util.ReflectionUtils.invokeMethod(ReflectionUtils.java:725)&#13;
+	at org.junit.jupiter.engine.execution.MethodInvocation.proceed(MethodInvocation.java:60)&#13;
+	at org.junit.jupiter.engine.execution.InvocationInterceptorChain$ValidatingInvocation.proceed(InvocationInterceptorChain.java:131)&#13;
+	at org.junit.jupiter.engine.extension.TimeoutExtension.intercept(TimeoutExtension.java:149)&#13;
+	at org.junit.jupiter.engine.extension.TimeoutExtension.interceptTestableMethod(TimeoutExtension.java:140)&#13;
+	at org.junit.jupiter.engine.extension.TimeoutExtension.interceptTestMethod(TimeoutExtension.java:84)&#13;
+	at org.junit.jupiter.engine.execution.ExecutableInvoker$ReflectiveInterceptorCall.lambda$ofVoidMethod$0(ExecutableInvoker.java:115)&#13;
+	at org.junit.jupiter.engine.execution.ExecutableInvoker.lambda$invoke$0(ExecutableInvoker.java:105)&#13;
+	at org.junit.jupiter.engine.execution.InvocationInterceptorChain$InterceptedInvocation.proceed(InvocationInterceptorChain.java:106)&#13;
+	at org.junit.jupiter.engine.execution.InvocationInterceptorChain.proceed(InvocationInterceptorChain.java:64)&#13;
+	at org.junit.jupiter.engine.execution.InvocationInterceptorChain.chainAndInvoke(InvocationInterceptorChain.java:45)&#13;
+	at org.junit.jupiter.engine.execution.InvocationInterceptorChain.invoke(InvocationInterceptorChain.java:37)&#13;
+	at org.junit.jupiter.engine.execution.ExecutableInvoker.invoke(ExecutableInvoker.java:104)&#13;
+	at org.junit.jupiter.engine.execution.ExecutableInvoker.invoke(ExecutableInvoker.java:98)&#13;
+	at org.junit.jupiter.engine.descriptor.TestMethodTestDescriptor.lambda$invokeTestMethod$7(TestMethodTestDescriptor.java:214)&#13;
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73)&#13;
+	at org.junit.jupiter.engine.descriptor.TestMethodTestDescriptor.invokeTestMethod(TestMethodTestDescriptor.java:210)&#13;
+	at org.junit.jupiter.engine.descriptor.TestMethodTestDescriptor.execute(TestMethodTestDescriptor.java:135)&#13;
+	at org.junit.jupiter.engine.descriptor.TestMethodTestDescriptor.execute(TestMethodTestDescriptor.java:66)&#13;
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$6(NodeTestTask.java:151)&#13;
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73)&#13;
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$8(NodeTestTask.java:141)&#13;
+	at org.junit.platform.engine.support.hierarchical.Node.around(Node.java:137)&#13;
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$9(NodeTestTask.java:139)&#13;
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73)&#13;
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.executeRecursively(NodeTestTask.java:138)&#13;
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.execute(NodeTestTask.java:95)&#13;
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)&#13;
+	at org.junit.platform.engine.support.hierarchical.SameThreadHierarchicalTestExecutorService.invokeAll(SameThreadHierarchicalTestExecutorService.java:41)&#13;
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$6(NodeTestTask.java:155)&#13;
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73)&#13;
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$8(NodeTestTask.java:141)&#13;
+	at org.junit.platform.engine.support.hierarchical.Node.around(Node.java:137)&#13;
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$9(NodeTestTask.java:139)&#13;
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73)&#13;
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.executeRecursively(NodeTestTask.java:138)&#13;
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.execute(NodeTestTask.java:95)&#13;
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)&#13;
+	at org.junit.platform.engine.support.hierarchical.SameThreadHierarchicalTestExecutorService.invokeAll(SameThreadHierarchicalTestExecutorService.java:41)&#13;
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$6(NodeTestTask.java:155)&#13;
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73)&#13;
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$8(NodeTestTask.java:141)&#13;
+	at org.junit.platform.engine.support.hierarchical.Node.around(Node.java:137)&#13;
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$9(NodeTestTask.java:139)&#13;
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73)&#13;
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.executeRecursively(NodeTestTask.java:138)&#13;
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.execute(NodeTestTask.java:95)&#13;
+	at org.junit.platform.engine.support.hierarchical.SameThreadHierarchicalTestExecutorService.submit(SameThreadHierarchicalTestExecutorService.java:35)&#13;
+	at org.junit.platform.engine.support.hierarchical.HierarchicalTestExecutor.execute(HierarchicalTestExecutor.java:57)&#13;
+	at org.junit.platform.engine.support.hierarchical.HierarchicalTestEngine.execute(HierarchicalTestEngine.java:54)&#13;
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:107)&#13;
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:88)&#13;
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.lambda$execute$0(EngineExecutionOrchestrator.java:54)&#13;
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.withInterceptedStreams(EngineExecutionOrchestrator.java:67)&#13;
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:52)&#13;
+	at org.junit.platform.launcher.core.DefaultLauncher.execute(DefaultLauncher.java:114)&#13;
+	at org.junit.platform.launcher.core.DefaultLauncher.execute(DefaultLauncher.java:95)&#13;
+	at org.junit.platform.launcher.core.DefaultLauncherSession$DelegatingLauncher.execute(DefaultLauncherSession.java:91)&#13;
+	at org.junit.platform.launcher.core.SessionPerRequestLauncher.execute(SessionPerRequestLauncher.java:60)&#13;
+	at org.eclipse.jdt.internal.junit5.runner.JUnit5TestReference.run(JUnit5TestReference.java:98)&#13;
+	at org.eclipse.jdt.internal.junit.runner.TestExecution.run(TestExecution.java:40)&#13;
+	at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.runTests(RemoteTestRunner.java:529)&#13;
+	at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.runTests(RemoteTestRunner.java:756)&#13;
+	at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.run(RemoteTestRunner.java:452)&#13;
+	at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.main(RemoteTestRunner.java:210)&#13;
+&#13;
+</error>
+    </testcase>
+    <testcase name="deveriaConverterPaymentEntityParaPaymentDto" classname="com.example.avalicao04.util.MappersUtilTest" time="0.0" displayname="deveriaConverterPaymentEntityParaPaymentDto()" uniqueid="[engine:junit-jupiter]/[class:com.example.avalicao04.util.MappersUtilTest]/[method:deveriaConverterPaymentEntityParaPaymentDto()]"/>
+    <testcase name="deveriaRetornarUmaStringRepresentandoOBodyDaRequisicaoDePagamentoParaPBBank" classname="com.example.avalicao04.util.MappersUtilTest" time="0.351" displayname="deveriaRetornarUmaStringRepresentandoOBodyDaRequisicaoDePagamentoParaPBBank()" uniqueid="[engine:junit-jupiter]/[class:com.example.avalicao04.util.MappersUtilTest]/[method:deveriaRetornarUmaStringRepresentandoOBodyDaRequisicaoDePagamentoParaPBBank()]"/>
+    <testcase name="deveriaRetornarUmInvalidValueExceptionQuandoReceberUmaStringDeBrandInvalida" classname="com.example.avalicao04.util.MappersUtilTest" time="0.001" displayname="deveriaRetornarUmInvalidValueExceptionQuandoReceberUmaStringDeBrandInvalida()" uniqueid="[engine:junit-jupiter]/[class:com.example.avalicao04.util.MappersUtilTest]/[method:deveriaRetornarUmInvalidValueExceptionQuandoReceberUmaStringDeBrandInvalida()]"/>
+    <testcase name="deveriaRetornarUmHttpHeadersComOTokenParaAutenticacaoNoPBBank" classname="com.example.avalicao04.util.MappersUtilTest" time="0.021" displayname="deveriaRetornarUmHttpHeadersComOTokenParaAutenticacaoNoPBBank()" uniqueid="[engine:junit-jupiter]/[class:com.example.avalicao04.util.MappersUtilTest]/[method:deveriaRetornarUmHttpHeadersComOTokenParaAutenticacaoNoPBBank()]"/>
+    <testcase name="deveriaRetornarUmInvalidValueExceptionQuandoReceberUmaStringDePaymentTypeInvalida" classname="com.example.avalicao04.util.MappersUtilTest" time="0.001" displayname="deveriaRetornarUmInvalidValueExceptionQuandoReceberUmaStringDePaymentTypeInvalida()" uniqueid="[engine:junit-jupiter]/[class:com.example.avalicao04.util.MappersUtilTest]/[method:deveriaRetornarUmInvalidValueExceptionQuandoReceberUmaStringDePaymentTypeInvalida()]"/>
+  </testsuite>
+</testrun>

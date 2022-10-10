@@ -1,12 +1,11 @@
 package com.example.avalicao04.service;
 
 import java.net.URI;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -23,42 +22,65 @@ import com.example.avalicao04.util.MappersUtil;
 @Service
 public class PaymentService {
 	
-	@Autowired
 	private PaymentRepository paymentRepository;
 	
+	private MappersUtil mappersUtil;
+	
+	public PaymentService(PaymentRepository paymentRepository, MappersUtil mappersUtil) {
+        this.paymentRepository = paymentRepository;
+        this.mappersUtil = mappersUtil;
+    }
+	
 	private Token token;
-	private LocalDateTime tokenExpirationTime;
-		
-	public List<PaymentDto> showAllPayments() {
+	private Date tokenExpirationTime = new Date();
+			
+	public ResponseEntity<List<PaymentDto>> showAllPayments() {
 		List<PaymentEntity> paymentsEntity = paymentRepository.findAll();
-		List<PaymentDto> paymentsDto = new ArrayList<>();
+		List<PaymentDto> paymentsDto = new ArrayList<>();		
 		for(int i = 0; i < paymentsEntity.size(); i++) {
-			paymentsDto.add(MappersUtil.convertPaymentEntityToDto(paymentsEntity.get(i)));
+			paymentsDto.add(mappersUtil.convertPaymentEntityToDto(paymentsEntity.get(i)));
 		}
-		return paymentsDto;
+		return ResponseEntity.ok(paymentsDto);
 	}
 
 	public ResponseEntity<PaymentDto> showOnePayment(Long id) {
 		Optional<PaymentEntity> paymentEntity = paymentRepository.findById(id);
 		if(paymentEntity.isPresent()) {
-			PaymentDto paymentDto = MappersUtil.convertPaymentEntityToDto(paymentEntity.get());
+			PaymentDto paymentDto = mappersUtil.convertPaymentEntityToDto(paymentEntity.get());
 			return ResponseEntity.ok(paymentDto);
 		}
 		return ResponseEntity.notFound().build();
 	}
 	
 	public ResponseEntity<PaymentEntity> makePayment(OrderForm orderForm, UriComponentsBuilder uriBuilder) {	
-		if(token == null || tokenExpirationTime.compareTo(LocalDateTime.now()) < 0) {
-		    token = MappersUtil.authenticate();
-	        tokenExpirationTime = LocalDateTime.now().plusMinutes(3);
+		if(token == null || tokenExpirationTime.compareTo(new Date()) < 0) {
+		    token = mappersUtil.authenticate();
+	        tokenExpirationTime = new Date();
+	        tokenExpirationTime.setMinutes(new Date().getMinutes()+3);
 		}
-		String paymentRequestBodyJSON = MappersUtil.createPaymentRequestBody(orderForm);
-		HttpHeaders paymentRequestHeader = MappersUtil.createPaymentRequestHeader(token);
-		PaymentResponseForm paymentResponseForm = MappersUtil.sendPaymentRequest(paymentRequestBodyJSON, paymentRequestHeader);
-		PaymentEntity paymentEntity = MappersUtil.convertPaymentResponseFormToPaymentEntity(paymentResponseForm);
+		String paymentRequestBodyJSON = mappersUtil.createPaymentRequestBody(orderForm);
+		HttpHeaders paymentRequestHeader = mappersUtil.createPaymentRequestHeader(token);
+		PaymentResponseForm paymentResponseForm = mappersUtil.sendPaymentRequest(paymentRequestBodyJSON, paymentRequestHeader);
+		PaymentEntity paymentEntity = mappersUtil.convertPaymentResponseFormToPaymentEntity(paymentResponseForm);
 		paymentRepository.save(paymentEntity);
 		
 		URI uri = uriBuilder.path("/{id}").buildAndExpand(paymentEntity.getOrderId()).toUri();
 		return ResponseEntity.created(uri).body(paymentEntity);    
 	}
+
+    public Token getToken() {
+        return token;
+    }
+
+    public void setToken(Token token) {
+        this.token = token;
+    }
+
+    public Date getTokenExpirationTime() {
+        return tokenExpirationTime;
+    }
+
+    public void setTokenExpirationTime(Date tokenExpirationTime) {
+        this.tokenExpirationTime = tokenExpirationTime;
+    }	
 }

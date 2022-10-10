@@ -1,0 +1,262 @@
+package com.example.avalicao04.service;
+
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.when;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Optional;
+
+import org.junit.Assert;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Captor;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.server.ResponseStatusException;
+import org.springframework.web.util.UriComponentsBuilder;
+
+import com.example.avalicao04.autentication.Token;
+import com.example.avalicao04.constant.PaymentStatus;
+import com.example.avalicao04.dto.PaymentDto;
+import com.example.avalicao04.entity.PaymentEntity;
+import com.example.avalicao04.form.CardForm;
+import com.example.avalicao04.form.ItemForm;
+import com.example.avalicao04.form.OrderForm;
+import com.example.avalicao04.repository.PaymentRepository;
+import com.example.avalicao04.util.MappersUtil;
+
+class PaymentServiceTest {
+
+    private PaymentService paymentService;
+
+    @Mock
+    private PaymentRepository paymentRepositoryMock;
+
+    @Mock
+    private MappersUtil mappersUtilMock;
+
+    @Captor
+    ArgumentCaptor<PaymentEntity> paymentEntityCaptor;
+
+    @BeforeEach
+    void inicialize() {
+        MockitoAnnotations.initMocks(this);
+        this.paymentService = new PaymentService(this.paymentRepositoryMock, this.mappersUtilMock);
+    }
+
+    @Test
+    void deveriaRetornarUmaListaComDoisItensConvertidosDePagamentoEnityParaDto() {
+        List<PaymentEntity> paymentsEntity = criarPayments();
+        
+        Mockito.when(paymentRepositoryMock.findAll()).thenReturn(paymentsEntity);
+
+        ResponseEntity<List<PaymentDto>> responseEntity = paymentService.showAllPayments();
+        List<PaymentDto> paymentsDto = responseEntity.getBody();
+
+        Mockito.verify(paymentRepositoryMock).findAll();
+        Mockito.verify(mappersUtilMock).convertPaymentEntityToDto(paymentsEntity.get(0));
+        Mockito.verify(mappersUtilMock).convertPaymentEntityToDto(paymentsEntity.get(1));
+        Assert.assertEquals(2, paymentsDto.size());
+        Assert.assertEquals(new ResponseEntity<>(HttpStatus.OK).getStatusCode(), responseEntity.getStatusCode());
+    }
+
+    @Test
+    void deveriaRetornarSomenteUmItemConvertidoDePagamentoEnityParaDto() {
+        Optional<PaymentEntity> paymententityOptional = Optional.of(criarPayments().get(0));
+        PaymentDto paymentDto = new PaymentDto(
+                paymententityOptional.get().getOrderId(),
+                paymententityOptional.get().getTotal(),
+                paymententityOptional.get().getPaymentId(),
+                paymententityOptional.get().getPaymentStatus(),
+                paymententityOptional.get().getMessage());
+
+        Mockito.when(paymentRepositoryMock.findById(Mockito.any())).thenReturn(paymententityOptional);
+        Mockito.when(mappersUtilMock.convertPaymentEntityToDto(paymententityOptional.get())).thenReturn(paymentDto);
+
+        ResponseEntity<PaymentDto> responseEntity = paymentService.showOnePayment(Mockito.anyLong());
+
+        Mockito.verify(paymentRepositoryMock).findById(Mockito.any());
+        Mockito.verify(mappersUtilMock).convertPaymentEntityToDto(paymententityOptional.get());
+        Assert.assertEquals(new ResponseEntity<>(HttpStatus.OK).getStatusCode(), responseEntity.getStatusCode());
+    }
+
+    @Test
+    void naoDeveriaRetornarItemConvertidoDePagamentoEnityParaDtoSeOMesmoNaoForEncontrado() {
+        ResponseEntity<PaymentDto> paymentDto = paymentService.showOnePayment(1L);
+
+        Assert.assertEquals(new ResponseEntity<>(HttpStatus.NOT_FOUND).getStatusCodeValue(),
+                paymentDto.getStatusCodeValue());
+    }
+
+    @Test
+    void deveriaRealizarAutenticacaoNoPBBankCasoAindaNaoTenhaSidoFeita() {
+        Token token = criarToken();
+        OrderForm orderForm = criarOrderForm();
+        PaymentEntity paymentEntity = criarPayments().get(0);
+        
+        paymentService.setToken(null);
+
+        Mockito.when(mappersUtilMock.authenticate()).thenReturn(token);
+        Mockito.when(mappersUtilMock
+                .convertPaymentResponseFormToPaymentEntity(Mockito.any()))
+                .thenReturn(paymentEntity);
+
+        paymentService.makePayment(orderForm, UriComponentsBuilder.fromUriString(""));
+
+        Mockito.verify(mappersUtilMock).authenticate();
+        Assert.assertFalse(paymentService.getTokenExpirationTime().compareTo(new Date()) < 0);
+    }
+    
+    @Test
+    void deveriaRealizarAutenticacaoNoPBBankOCasoOTokenTenhaExpirado() {
+        Token token = criarToken();
+        OrderForm orderForm = criarOrderForm();
+        PaymentEntity paymentEntity = criarPayments().get(0);
+        Date dataExpirada = new Date();
+        dataExpirada.setMinutes(new Date().getMinutes()-1);
+        
+        paymentService.setToken(token);
+        paymentService.setTokenExpirationTime(dataExpirada);
+
+        Mockito.when(mappersUtilMock.authenticate()).thenReturn(token);
+        Mockito.when(mappersUtilMock
+                .convertPaymentResponseFormToPaymentEntity(Mockito.any()))
+                .thenReturn(paymentEntity);
+
+        paymentService.makePayment(orderForm, UriComponentsBuilder.fromUriString(""));
+
+        Mockito.verify(mappersUtilMock).authenticate();
+        Assert.assertFalse(paymentService.getTokenExpirationTime().compareTo(new Date()) < 0);
+    }
+
+    @Test
+    void naoDeveriaRealizarAutenticacaoNoPBBankCasoOTokenNaoTenhaExpirado() {
+        Token token = criarToken();
+        Date newDate = new Date();
+        newDate.setMinutes(new Date().getMinutes() + 3);
+
+        paymentService.setToken(token);
+        paymentService.setTokenExpirationTime(newDate);
+
+        OrderForm orderForm = criarOrderForm();
+        PaymentEntity paymentEntity = criarPayments().get(0);
+
+        Mockito.when(mappersUtilMock
+                .convertPaymentResponseFormToPaymentEntity(Mockito.any()))
+                .thenReturn(paymentEntity);
+
+        paymentService.makePayment(orderForm, UriComponentsBuilder.fromUriString(""));
+
+        Mockito.verify(mappersUtilMock, never()).authenticate();
+        Assert.assertFalse(paymentService.getTokenExpirationTime().compareTo(new Date()) < 0);  
+    }
+
+    @Test
+    void deveriaSalvarPaymentEntityNoBancoDeDadosQuandoOPagamentoForAprovado() {
+        paymentService.setToken(null);
+        paymentService.setTokenExpirationTime(null);
+        Token token = criarToken();
+        OrderForm orderForm = criarOrderForm();
+        PaymentEntity paymentEntity = criarPayments().get(0);
+
+        Mockito.when(mappersUtilMock.authenticate()).thenReturn(token);
+        Mockito.when(mappersUtilMock
+                .convertPaymentResponseFormToPaymentEntity(Mockito.any()))
+                .thenReturn(paymentEntity);
+
+        ResponseEntity<PaymentEntity> responseEntity = paymentService.makePayment(orderForm, UriComponentsBuilder.fromUriString(""));
+       
+        Mockito.verify(mappersUtilMock).authenticate();        
+        Mockito.verify(mappersUtilMock).createPaymentRequestBody(orderForm);
+        
+        Mockito.verify(paymentRepositoryMock).save(Mockito.any());
+        Assert.assertEquals(new ResponseEntity<>(HttpStatus.CREATED).getStatusCode(), responseEntity.getStatusCode());
+    }
+
+    @Test
+    void deveriaSalvarPaymentEntityNoBancoDeDadosQuandoOPagamentoForReprovado() {
+        paymentService.setToken(null);
+        paymentService.setTokenExpirationTime(null);
+        Token token = criarToken();
+        OrderForm orderForm = criarOrderForm();
+        PaymentEntity paymentEntity = criarPayments().get(1);
+
+        Mockito.when(mappersUtilMock.authenticate()).thenReturn(token);
+        Mockito.when(mappersUtilMock
+                .convertPaymentResponseFormToPaymentEntity(Mockito.any()))
+                .thenReturn(paymentEntity);
+
+        paymentService.makePayment(orderForm, UriComponentsBuilder.fromUriString(""));
+
+        Mockito.verify(mappersUtilMock).authenticate();
+        Mockito.verify(paymentRepositoryMock).save(Mockito.any());
+        Assert.assertEquals(new Long(12345288910L), paymentEntity.getOrderId());
+        Assert.assertEquals(new Double(423.2), paymentEntity.getTotal());
+        Assert.assertEquals("1c3a1fec-4b86-a2a2-ff537d-9c4b-29d3c7", paymentEntity.getPaymentId());
+        Assert.assertEquals(PaymentStatus.REPROVED, paymentEntity.getPaymentStatus());
+        Assert.assertEquals("transaction reproved", paymentEntity.getMessage());
+    }
+
+    private List<PaymentEntity> criarPayments() {
+        List<PaymentEntity> payments = new ArrayList<>();
+        payments.add(new PaymentEntity(
+                12345678910L,
+                234.9,
+                "1c3a1fec-9c4b-4b86-a2a2-ff537d29d3c7",
+                PaymentStatus.APPROVED,
+                "transaction approved"));
+
+        payments.add(new PaymentEntity(
+                12345288910L,
+                423.2,
+                "1c3a1fec-4b86-a2a2-ff537d-9c4b-29d3c7",
+                PaymentStatus.REPROVED,
+                "transaction reproved"));
+        return payments;
+    }
+
+    private Token criarToken() {
+        Token token = new Token("akjhfdjkahdf&odihfjakbwe", "Bearer", "180");
+        return token;
+    }
+
+    private OrderForm criarOrderForm() {
+        CardForm cardForm = new CardForm(
+                "6721546712123",
+                "JOAO MURILO",
+                "312",
+                8,
+                "10",
+                "MASTERCARD");
+
+        List<ItemForm> itemsForm = new ArrayList<>();
+
+        itemsForm.add(new ItemForm(
+                "Item 01",
+                12.45,
+                10));
+
+        itemsForm.add(new ItemForm(
+                "Item 01",
+                12.45,
+                10));
+
+        OrderForm orderForm = new OrderForm(
+                "43209756409",
+                itemsForm,
+                9.87,
+                3.43,
+                "CREDIT_CARD",
+                "BRL",
+                cardForm);
+
+        return orderForm;
+    }
+}

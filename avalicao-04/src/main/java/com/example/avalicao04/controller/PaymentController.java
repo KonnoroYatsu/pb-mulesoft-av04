@@ -27,7 +27,7 @@ public class PaymentController {
 	
 	@GetMapping
 	public ResponseEntity<List<PaymentDto>> listarPedidos(){
-		return ResponseEntity.ok(paymentService.showAllPayments());
+		return paymentService.showAllPayments();
 	}
 	
 	@GetMapping("/{id}")

@@ -2,6 +2,7 @@
 <section name="Workbench">
 	<section name="MavenProjectImportWizardPage">
 		<list key="rootDirectory">
+			<item value="C:\Users\joao_\OneDrive\Estágio - Compass\Alura\Sprint 04\Mocks em Java - conhecendo o Mockito"/>
 			<item value="C:\Users\joao_\OneDrive\Estágio - Compass\Provas\Prova 04\pb-molesoft-av04\avalicao-04"/>
 		</list>
 		<list key="projectNameTemplate">

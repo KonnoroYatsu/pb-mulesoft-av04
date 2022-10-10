@@ -1,0 +1,185 @@
+package com.example.avalicao04.service;
+
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
+import org.junit.Assert;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Captor;
+import org.mockito.Mock;
+import org.mockito.MockedStatic;
+import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+
+import com.example.avalicao04.autentication.Token;
+import com.example.avalicao04.constant.PaymentStatus;
+import com.example.avalicao04.dto.PaymentDto;
+import com.example.avalicao04.entity.PaymentEntity;
+import com.example.avalicao04.repository.PaymentRepository;
+import com.example.avalicao04.util.MappersUtil;
+
+class PaymentServiceTest {
+
+    private PaymentService paymentService;
+
+    @Mock
+    private PaymentRepository paymentRepositoryMock;
+
+    @Mock
+    private MappersUtil mappersUtilMock;
+
+    Token token;
+    LocalDateTime tokenExpirationTime;
+
+    @BeforeEach
+    void inicialize() {
+        MockitoAnnotations.initMocks(this);
+        this.paymentService = new PaymentService(this.paymentRepositoryMock, this.mappersUtilMock);
+    }
+
+    @Test
+    void deveriaRetornarUmaListaComDoisItensConvertidosDePagamentoEnityParaDto() {
+        List<PaymentEntity> paymentsEntity = payments();
+        Mockito.when(paymentRepositoryMock.findAll()).thenReturn(paymentsEntity);
+
+        List<PaymentDto> paymentsDto = paymentService.showAllPayments();
+
+        Mockito.verify(mappersUtilMock).convertPaymentEntityToDto(paymentsEntity.get(0));
+        Mockito.verify(mappersUtilMock).convertPaymentEntityToDto(paymentsEntity.get(1));
+        Mockito.verify(paymentRepositoryMock).findAll();
+        Assert.assertFalse(paymentsDto.isEmpty());
+        Assert.assertEquals(2, paymentsDto.size());
+    }
+
+//    @Test
+//    void deveriaRetornarSomenteUmItemConvertidoDePagamentoEnityParaDto() {
+//        Optional<PaymentEntity> paymententityOptional = Optional.of(payments().get(0));
+//        
+//        Mockito.when(paymentRepositoryMock.findById(new Long(1))).thenReturn(paymententityOptional);
+//        
+//        ResponseEntity<PaymentDto> paymentDto = paymentService.showOnePayment(new Long(1));
+//        System.out.println(paymentDto);
+//    }
+
+    @Test
+    void naoDeveriaRetornarItemConvertidoDePagamentoEnityParaDtoSeOMesmoNaoForEncontrado() {
+        ResponseEntity<PaymentDto> paymentDto = paymentService.showOnePayment(1L);
+        
+        Assert.assertEquals(new ResponseEntity<>(HttpStatus.NOT_FOUND).getStatusCode(), paymentDto.getStatusCode());
+    }
+
+    @Test
+    void deveriaRealizarAutenticacaoNoPBBankCasoAindaNaoTenhaSidoFeita() {
+        
+        
+        paymentService.setToken(null);
+        paymentService.setTokenExpirationTime(null);
+
+        if (token == null || tokenExpirationTime.compareTo(LocalDateTime.now()) <= 0) {
+            token = token();
+            try (MockedStatic<MappersUtil> mappersUtilMock = Mockito.mockStatic(MappersUtil.class);) {
+                mappersUtilMock.when(MappersUtil::authenticate).thenReturn(token);
+            }
+            tokenExpirationTime = LocalDateTime.now().plusMinutes(3);
+        }
+        Assert.assertEquals("akjhfdjkahdf&odihfjakbwe", token.getAccessToken());
+        Assert.assertEquals("Bearer", token.getTokenType());
+        Assert.assertEquals("180", token.getExpiresIn());
+        Assert.assertEquals(LocalDateTime.now().plusMinutes(3).getMinute(), tokenExpirationTime.getMinute());
+    }
+//
+//    @Test
+//    void deveriaRealizarAutenticacaoNoPBBankCasoOTokenTenhaExpirado() {
+//        tokenExpirationTime = LocalDateTime.now().plusMinutes(-1);
+//
+//        if (token == null || tokenExpirationTime.compareTo(LocalDateTime.now()) <= 0) {
+//            token = token();
+//            try (MockedStatic<MappersUtil> mappersUtilMock = Mockito.mockStatic(MappersUtil.class);) {
+//                mappersUtilMock.when(MappersUtil::authenticate).thenReturn(token);
+//            }
+//            tokenExpirationTime = LocalDateTime.now().plusMinutes(3);
+//        }
+//        Assert.assertEquals("akjhfdjkahdf&odihfjakbwe", token.getAccessToken());
+//        Assert.assertEquals("Bearer", token.getTokenType());
+//        Assert.assertEquals("180", token.getExpiresIn());
+//        Assert.assertEquals(LocalDateTime.now().plusMinutes(3).getMinute(), tokenExpirationTime.getMinute());
+//    }
+//
+//    @Test
+//    void naoDeveriaRealizarAutenticacaoNoPBBankCasoOTokenNaoTenhaExpirado() {
+//        token = token();
+//        tokenExpirationTime = LocalDateTime.now().plusMinutes(1);
+//
+//        if (token == null || tokenExpirationTime.compareTo(LocalDateTime.now()) <= 0) {
+//            token = token();
+//            try (MockedStatic<MappersUtil> mappersUtilMock = Mockito.mockStatic(MappersUtil.class);) {
+//                mappersUtilMock.when(MappersUtil::authenticate).thenReturn(token);
+//                mappersUtilMock.verifyNoInteractions();
+//            }
+//            tokenExpirationTime = LocalDateTime.now().plusMinutes(3);
+//        }
+//        Assert.assertEquals("akjhfdjkahdf&odihfjakbwe", token.getAccessToken());
+//        Assert.assertEquals("Bearer", token.getTokenType());
+//        Assert.assertEquals("180", token.getExpiresIn());
+//        Assert.assertEquals(LocalDateTime.now().plusMinutes(1).getMinute(), tokenExpirationTime.getMinute());
+//    }
+//
+//    @Test
+//    void deveriaSalvarPaymentEntityNoBancoDeDadosQuandoOPagamentoForAprovado() {
+//        PaymentRepository paymentRepositoryMock = Mockito.mock(PaymentRepository.class);
+//
+//        PaymentEntity paymentEntity = payments().get(0);
+//        paymentRepositoryMock.save(paymentEntity);
+//        
+//        Mockito.verify(paymentRepositoryMock).save(any(PaymentEntity.class));      
+//        Assert.assertEquals(new Long(12345678910l), paymentEntity.getOrderId());
+//        Assert.assertEquals(new Double(234.9), paymentEntity.getTotal());
+//        Assert.assertEquals("1c3a1fec-9c4b-4b86-a2a2-ff537d29d3c7", paymentEntity.getPaymentId());
+//        Assert.assertEquals(PaymentStatus.APPROVED, paymentEntity.getPaymentStatus());
+//        Assert.assertEquals("transaction approved", paymentEntity.getMessage());
+//    }
+//
+//    @Test
+//    void deveriaSalvarPaymentEntityNoBancoDeDadosQuandoOPagamentoForReprovado() {
+//        PaymentRepository paymentRepositoryMock = Mockito.mock(PaymentRepository.class);
+//
+//        PaymentEntity paymentEntity = payments().get(1);      
+//        paymentRepositoryMock.save(paymentEntity);
+//        
+//        Mockito.verify(paymentRepositoryMock).save(any(PaymentEntity.class));
+//        Assert.assertEquals(new Long(12345288910l), paymentEntity.getOrderId());
+//        Assert.assertEquals(new Double(423.2), paymentEntity.getTotal());
+//        Assert.assertEquals("1c3a1fec-4b86-a2a2-ff537d-9c4b-29d3c7", paymentEntity.getPaymentId());
+//        Assert.assertEquals(PaymentStatus.REPROVED, paymentEntity.getPaymentStatus());
+//        Assert.assertEquals("transaction reproved", paymentEntity.getMessage());
+//    }
+
+    private List<PaymentEntity> payments() {
+        List<PaymentEntity> payments = new ArrayList<>();
+        payments.add(new PaymentEntity(
+                12345678910l,
+                234.9,
+                "1c3a1fec-9c4b-4b86-a2a2-ff537d29d3c7",
+                PaymentStatus.APPROVED,
+                "transaction approved"));
+
+        payments.add(new PaymentEntity(
+                12345288910l,
+                423.2,
+                "1c3a1fec-4b86-a2a2-ff537d-9c4b-29d3c7",
+                PaymentStatus.REPROVED,
+                "transaction reproved"));
+        return payments;
+    }
+
+    private Token token() {
+        Token token = new Token("akjhfdjkahdf&odihfjakbwe", "Bearer", "180");
+        return token;
+    }
+}

@@ -1,0 +1,43 @@
+package com.example.avalicao04.util;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.junit.jupiter.api.Test;
+
+import com.example.avalicao04.autentication.Token;
+import com.example.avalicao04.constant.PaymentStatus;
+import com.example.avalicao04.entity.PaymentEntity;
+
+class MappersUtilTest {
+
+    @Test
+    void deveriaConverterPaymentEntityParaPaymentDto() {
+        PaymentEntity paymentEntity = new PaymentEntity();
+    }
+
+    private List<PaymentEntity> payments() {
+        List<PaymentEntity> payments = new ArrayList<>();
+        payments.add(new PaymentEntity(
+                12345678910l,
+                234.9,
+                "1c3a1fec-9c4b-4b86-a2a2-ff537d29d3c7",
+                PaymentStatus.APPROVED,
+                "transaction approved"));
+
+        payments.add(new PaymentEntity(
+                12345288910l,
+                423.2,
+                "1c3a1fec-4b86-a2a2-ff537d-9c4b-29d3c7",
+                PaymentStatus.REPROVED,
+                "transaction reproved"));
+        return payments;
+    }
+
+    private Token token() {
+        Token token = new Token("akjhfdjkahdf&odihfjakbwe", "Bearer", "180");
+        return token;
+    }
+}

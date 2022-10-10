@@ -20,7 +20,7 @@ public class PaymentDto {
 	private Double total;
     
     @NotNull @JsonProperty("payment_id")
-	private String paymenteId;
+	private String paymentId;
     
     @NotNull @JsonProperty("payment_status")
 	private PaymentStatus paymentStatus;
