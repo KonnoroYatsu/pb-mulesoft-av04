@@ -1,18 +1,13 @@
 package com.example.avalicao04.util;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.Assert;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.skyscreamer.jsonassert.JSONCompare;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
-import org.springframework.security.crypto.bcrypt.BCrypt;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import com.example.avalicao04.autentication.Token;
 import com.example.avalicao04.constant.Brand;

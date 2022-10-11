@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import com.example.avalicao04.exception.InvalidValueException;
+import com.example.avalicao04.exception.PBBankConnectionException;
 
 @RestControllerAdvice
 public class HandlerValidation {
@@ -36,6 +37,14 @@ public class HandlerValidation {
     @ResponseStatus(code = HttpStatus.BAD_REQUEST)
     @ExceptionHandler(InvalidValueException.class)
     public List<String> handler(InvalidValueException exception) {
+        List<String> erro = new ArrayList<String>();
+        erro.add(exception.getMessage());
+        return erro;
+    }
+    
+    @ResponseStatus(code = HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(PBBankConnectionException.class)
+    public List<String> handler(PBBankConnectionException exception) {
         List<String> erro = new ArrayList<String>();
         erro.add(exception.getMessage());
         return erro;

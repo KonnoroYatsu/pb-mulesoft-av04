@@ -1,0 +1,8 @@
+package com.example.avalicao04.exception;
+
+public class PBBankConnectionException extends Exception {
+    
+    public PBBankConnectionException(String msg) {
+        super(msg);
+    }
+}

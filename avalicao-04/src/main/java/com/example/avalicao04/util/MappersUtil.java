@@ -26,6 +26,7 @@ import com.example.avalicao04.dto.CustomerDto;
 import com.example.avalicao04.dto.PaymentDto;
 import com.example.avalicao04.entity.PaymentEntity;
 import com.example.avalicao04.exception.InvalidValueException;
+import com.example.avalicao04.exception.PBBankConnectionException;
 import com.example.avalicao04.form.CardForm;
 import com.example.avalicao04.form.OrderForm;
 import com.example.avalicao04.pbBank.PaymentRequestDto;
@@ -139,12 +140,14 @@ public class MappersUtil {
 
         ClientAutenticationDto clientAutenticationDto = new ClientAutenticationDto(
                 sellerAutentication.getSellerClientId(),
-                sellerAutentication.getSellerApiKey());
-
-        ResponseEntity<Token> auth = restTemplate.postForEntity(url, clientAutenticationDto, Token.class);
-        Token token = auth.getBody();
-
-        return token;
+                sellerAutentication.getSellerApiKey());        
+        try {
+            ResponseEntity<Token> auth = restTemplate.postForEntity(url, clientAutenticationDto, Token.class);
+            Token token = auth.getBody();
+            return token;
+        }catch (Exception e) {
+            throw new PBBankConnectionException("Unable to connect to PB-Bank");
+        }
     }
 
     public PaymentResponseForm sendPaymentRequest(String paymentRequestBodyJSON,
@@ -153,8 +156,13 @@ public class MappersUtil {
         String url = "https://pb-getway-payment.herokuapp.com/v1/payments/credit-card";
 
         HttpEntity<String> httpEntity = new HttpEntity<String>(paymentRequestBodyJSON, paymentRequestHeader);
-        ResponseEntity<PaymentResponseForm> response = rest.exchange(url, HttpMethod.POST, httpEntity,
-                PaymentResponseForm.class);
-        return response.getBody();
+        
+        try {
+            ResponseEntity<PaymentResponseForm> response = rest.exchange(url, HttpMethod.POST, httpEntity,
+                    PaymentResponseForm.class);
+            return response.getBody();
+        }catch (Exception e) {
+            throw new PBBankConnectionException("Unable to connect to PB-Bank");
+        }
     }
 }
